@@ -23,8 +23,8 @@ def hoofdmenu():
     """Deze functie vraagt de gebruiker een keuze te maken in het menu"""
     print(f'Je hebt momenteel \"{set_service}\" als voorkeur ingesteld \n')
     keuze = int(input("Welkom terug in de Uber-app! Wat kunnen we vandaag voor je doen?"
-                      "\n1: Mijn service voorkeur aanpassen "
-                      "\n2: Een nieuwe rit boeken "
+                      "\n1: Een nieuwe rit boeken "
+                      "\n2: Mijn service voorkeur aanpassen "
                       "\n3: Mijn ritten geschiedenis inzien "
                       "\n4: De applicatie afsluiten\n"))
     return keuze
@@ -35,23 +35,6 @@ while True:
     menu_choice = hoofdmenu()
 
     while menu_choice == 1:
-        clear_screen()
-        def fav_ride():
-            """Vraagt de gebruiker om zijn/haar voorkeur voor de service."""
-            print(f'Uw huidige favoriete service is \"{set_service}\"')
-            print('Onze services zijn:')
-            for service in uber_service:
-                print(f"- {service}")
-            favorite = input("Welke service wil je instellen als standaard? ")
-            favorite = favorite.title()
-            while favorite not in uber_service:
-                print(f"{favorite} is een ongeldige keuze.")
-                favorite = input("Welke service wil je instellen als standaard? ")
-            return favorite
-        user["preference"] = fav_ride()
-        break
-
-    while menu_choice == 2 :
         clear_screen()
         def get_service():
             """Vraagt de gebruiker om zijn/haar voorkeur te gebruiken of een geldige Uber-service te kiezen en geeft die terug."""
@@ -90,24 +73,39 @@ while True:
         user["history"].append((ride, afstand, totaal))
         clear_screen()
         # Output
-        print(f'U heeft gekozen voor {ride}. De kosten voor uw rit van {afstand} kilometer(s) zijn €{totaal}')
+        print(f'U heeft gekozen voor {ride}. De kosten voor uw rit van {afstand} kilometer(s) zijn €{totaal:.2f}')
         herhalen = int(input("Wil je nog een rit boeken?: \n1: Ja \n2: Nee "))
         if herhalen ==1:
             print("U kunt nog een rit boeken")
         elif herhalen ==2:
             break
 
-    while menu_choice == 3:
+    if menu_choice == 2:
+        clear_screen()
+        def fav_ride():
+            """Vraagt de gebruiker om zijn/haar voorkeur voor de service."""
+            print(f'Uw huidige favoriete service is \"{set_service}\"')
+            print('Onze services zijn:')
+            for service in uber_service:
+                print(f"- {service}")
+            favorite = input("Welke service wil je instellen als standaard? ")
+            favorite = favorite.title()
+            while favorite not in uber_service:
+                print(f"{favorite} is een ongeldige keuze.")
+                favorite = input("Welke service wil je instellen als standaard? ")
+            return favorite
+        user["preference"] = fav_ride()
+
+    elif menu_choice == 3:
         clear_screen()
         nummer = 0
         if not user["history"]:
             print("Je hebt nog geen ritten gemaakt.")
         for service, aantal_km, prijs in user["history"]:
             nummer +=1
-            print(f'Rit: {nummer} - €{prijs} - Je hebt {aantal_km} kilometer gereisd met de dienst "{service}".')
-        break
+            print(f'Rit: {nummer} - €{prijs:.2f} - Je hebt {aantal_km} kilometer gereisd met de dienst "{service}".')
 
-    if menu_choice == 4:
+    elif menu_choice == 4:
         clear_screen()
         print("Afsluiten voltooid. De applicatie is succesvol afgesloten.")
         break
