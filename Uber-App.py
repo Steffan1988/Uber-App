@@ -50,6 +50,7 @@ while True:
             while user_choice not in uber_service:
                 print(f"{user_choice} is een ongeldige keuze.")
                 user_choice = input("Welke service wil je gebruiken? ")
+                user_choice = user_choice.title()
             return user_choice
 
 
